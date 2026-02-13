@@ -1,0 +1,118 @@
+Date : - 13th Feb 2026
+
+Question 1 : -
+
+You have been asked to get a list of all the sign up IDs with transaction start dates in either April or May.
+Since a sign up ID can be used for multiple transactions only output the unique ID.
+Your output should contain a list of non duplicated sign-up IDs.
+
+Sol : - select distinct(signup_id) from transactions where month(transaction_start_date) in (4,5);
+
+
+
+
+Question 2 : - 
+
+Meta/Facebook has developed a new programing language called Hack.To measure the popularity of Hack they ran a survey with their employees.
+The survey included data on previous programing familiarity as well as the number of years of experience, age, gender and most importantly satisfaction with Hack.
+Due to an error location data was not collected, but your supervisor demands a report showing average popularity of Hack by office location.
+Luckily the user IDs of employees completing the surveys were stored.
+Based on the above, find the average popularity of the Hack per office location.
+Output the location along with the average popularity.
+
+
+Sol : - select fe.location, avg(fhs.popularity) from facebook_employees fe join facebook_hack_survey fhs on fe.id = fhs.employee_id group by fe.location;
+
+
+
+
+Question 3 : -
+
+Write a query that will calculate the number of shipments per month.
+The unique key for one shipment is a combination of shipment_id and sub_id. Output the year_month in format YYYY-MM and the number of shipments in that month.
+
+
+Sol : - select COUNT(DISTINCT(CONCAT(shipment_id,sub_id))), DATE_FORMAT(shipment_date, '%Y-%m') from amazon_shipment group by DATE_FORMAT(shipment_date, '%Y-%m');
+
+
+
+
+Question 4 : -
+Count the number of user events performed by MacBookPro users.
+Output the result along with the event name.
+Sort the result based on the event count in the descending order.
+
+
+Sol : - select event_name,count(*) from playbook_events where device = 'macbook pro' group by event_name;
+
+
+
+
+Question 5 : - 
+Find the most profitable company from the financial sector. Output the result along with the continent.
+
+
+sol : - select company, continent from forbes_global_2010_2014 where profits in (select max(profits) from forbes_global_2010_2014 where sector = 'Financials');
+
+
+
+
+Question 6 : -
+Find the inspection date and risk category (pe_description) of facilities named 'STREET CHURROS' that received a score below 95.
+
+
+select activity_date, pe_description from los_angeles_restaurant_health_inspections where facility_name = 'STREET CHURROS' and score < 95;
+
+
+
+
+Question 7 : -
+Find the review_text that received the highest number of  cool votes.
+Output the business name along with the review text with the highest number of cool votes.
+
+
+select business_name, review_text from yelp_reviews where cool in (select max(cool) from yelp_reviews);
+
+
+
+
+Question 8 : -
+Calculate the percentage of users who are both from the US and have an 'open' status, as indicated in the fb_active_users table.
+
+
+select (100.0*count(*))/(select COUNT(*) from fb_active_users) from fb_active_users where country = 'USA' and status = 'open';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
