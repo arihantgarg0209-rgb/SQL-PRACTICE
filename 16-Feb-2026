@@ -1,0 +1,51 @@
+Q1 - You are given a dataset of health inspections that includes details about violations. Each row represents an inspection, and if an inspection resulted in a violation, the violation_id column will contain a value.
+Count the total number of violations that occurred at 'Roxanne Cafe' for each year, based on the inspection date. Output the year and the corresponding number of violations in ascending order of the year.
+
+
+S1 - select YEAR(inspection_date) as year, count(business_id) from sf_restaurant_health_violations where business_name = 'Roxanne Cafe' and violation_id is not null group by year order by year;
+
+
+
+
+Q2 - Find all Lyft drivers who earn either equal to or less than 30k USD or equal to or more than 70k USD.
+Output all details related to retrieved records.
+
+
+S2 - select `index`,start_date,end_date,yearly_salary from lyft_drivers where yearly_salary <=30000 or yearly_salary >=70000;
+
+
+
+
+Q3 - Find how many times each artist appeared on the Spotify ranking list.
+Output the artist name along with the corresponding number of occurrences.
+Order records by the number of occurrences in descending order.
+
+
+S3 - select artist, count(id) as counts from spotify_worldwide_daily_song_ranking group by artist order by counts desc;
+
+
+
+
+Q4 - Find the details of each customer regardless of whether the customer made an order. Output the customer's first name, last name, and the city along with the order details.
+Sort records based on the customer's first name and the order details in ascending order.
+
+
+S4 - select c.first_name, c.last_name, c.city, o.order_details from customers c left join orders o on c.id = o.cust_id order by first_name, order_details;
+
+
+
+
+Q5 - Find the number of employees working in the Admin department that joined in April or later, in any year.
+
+
+S5 - select COUNT(WORKER_ID) from worker WHERE DEPARTMENT = 'Admin' and Month(joining_date)>=4;
+
+
+
+
+Q6 - Find the number of workers by department who joined on or after April 1, 2014.
+Output the department name along with the corresponding number of workers.
+Sort the results based on the number of workers in descending order.
+
+
+S6 - select department,count(worker_id) as counts from worker where joining_date>='2014-04-01' group by department order by counts desc;
