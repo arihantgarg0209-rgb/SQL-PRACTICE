@@ -1,0 +1,42 @@
+Given a table of candidates and their skills, write a query to find candidates who are proficient in all three of these skills: Python, Tableau, and PostgreSQL. Output their candidate_id, sorted in ascending order.
+
+select candidate_id 
+from candidates 
+where skill in ('Python', 'Tableau', 'PostgreSQL')
+group by candidate_id 
+having COUNT(skill) =3 
+order by candidate_id;
+
+
+
+
+Write a query to return the IDs of Facebook pages that have zero likes. Output should be sorted in ascending order.
+
+SELECT p.page_id 
+FROM pages p 
+LEFT JOIN page_likes pl ON p.page_id = pl.page_id
+WHERE pl.liked_date IS NULL 
+ORDER BY p.page_id;
+
+
+
+
+Write a query to find the top 3 cities that have the highest number of completed trade orders. Output the city and the number of completed orders, sorted from highest to lowest.
+
+SELECT u.city, COUNT(t.order_id) AS total_orders 
+FROM users u 
+JOIN trades t ON u.user_id = t.user_id 
+WHERE t.status = 'Completed' 
+GROUP BY u.city 
+ORDER BY total_orders DESC 
+LIMIT 3;
+
+
+
+
+Write a query to get the total number of laptop views vs mobile views. Mobile is defined as anything that is NOT a laptop (i.e., tablet + phone combined). Output two columns: laptop_views and mobile_views.
+
+SELECT 
+SUM(CASE WHEN DEVICE_TYPE = 'LAPTOP' THEN 1 ELSE 0 END) AS LAPTOP_VIEWS,
+SUM(CASE WHEN DEVICE_TYPE != 'LAPTOP' THEN 1 ELSE 0 END) AS MOBILE_VIEWS
+FROM VIEWERSHIP
