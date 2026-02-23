@@ -1,0 +1,16 @@
+q1 -> how each employee's name, department, salary, and a new column called salary_bracket that labels them as:
+
+'High' if salary >= 80000
+'Mid' if salary between 65000 and 79999
+'Low' if salary < 65000
+
+
+SELECT NAME, DEPARTMENT, SALARY,
+CASE WHEN SALARY>=80000 THEN 'HIGH'
+              WHEN SALARY BETWEEN 65000 AND 79999 THEN 'MID'
+              ELSE 'LOW'
+END AS SALARY_BRACKET
+FROM EMPLOYEES;
+
+
+SOLVED 10 SQL QUESTIONS.
