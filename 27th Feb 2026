@@ -1,0 +1,52 @@
+q1 - > Assume you're given tables with information about TikTok user sign-ups and confirmations through email and text. New users on TikTok sign up using their email addresses, and upon sign-up, each user receives a text message confirmation to activate their account.
+Write a query to display the user IDs of those who did not confirm their sign-up on the first day, but confirmed on the second day.
+
+
+WITH CTE AS (
+SELECT E.USER_ID,E.EMAIL_ID,T.SIGNUP_ACTION,
+ROW_NUMBER() OVER (PARTITION BY E.EMAIL_ID ORDER BY ACTION_DATE) as ranks
+FROM EMAILS E JOIN TEXTS T ON E.EMAIL_ID = T.EMAIL_ID)
+SELECT USER_ID FROM CTE WHERE SIGNUP_ACTION = 'Confirmed' and ranks = '2'
+
+
+
+
+Given a table of candidates and their skills, you're tasked with finding the candidates best suited for an open Data Science job. You want to find candidates who are proficient in Python, Tableau, and PostgreSQL.
+Write a query to list the candidates who possess all of the required skills for the job. Sort the output by candidate ID in ascending order.
+
+
+with CTE as (
+SELECT candidate_id, SKILL, COUNT(SKILL) AS COUNTS
+FROM candidates GROUP BY CANDIDATE_ID)
+SELECT CANDIDATE_ID
+FROM CTE WHERE COUNTS = 3 AND SKILL IN ('Python', 'Tableau', 'PostgreSQL');
+
+
+
+
+IBM is analyzing how their employees are utilizing the Db2 database by tracking the SQL queries executed by their employees. The objective is to generate data to populate a histogram that shows the number of unique queries run by employees during the third quarter of 2023 (July to September).
+Additionally, it should count the number of employees who did not run any queries during this period.
+Display the number of unique queries as histogram categories, along with the count of employees who executed that number of unique queries.
+
+
+WITH CTE AS (
+    SELECT 
+        E.EMPLOYEE_ID,
+        COUNT(
+            CASE 
+                WHEN Q.QUERY_STARTTIME >= '2023-07-01'
+                 AND Q.QUERY_STARTTIME <  '2023-10-01'
+                THEN Q.QUERY_ID
+            END
+        ) AS query_count
+    FROM EMPLOYEES E
+    LEFT JOIN QUERIES Q
+        ON Q.EMPLOYEE_ID = E.EMPLOYEE_ID
+    GROUP BY E.EMPLOYEE_ID
+)
+SELECT 
+    query_count,
+    COUNT(*) AS employee_count
+FROM CTE
+GROUP BY query_count
+ORDER BY query_count;
