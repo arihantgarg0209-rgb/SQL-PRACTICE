@@ -1,0 +1,15 @@
+q1 -> Write a SQL query that returns each month_date, the total revenue for that month, and the month-over-month revenue growth as a percentage (rounded to 1 decimal place). The first month should show NULL for growth. Order by month_date ascending.
+
+Sol 1 -> WITH REVENUE_1 AS
+(SELECT MONTH_DATE, SUM(REVENUE) OVER(PARTITION BY MONTH_DATE ORDER BY MONTH_DATE) AS TOTAL_REVENUE
+FROM MONTHLY_REVENUE)
+, REVENUE_2 AS
+(SELECT DISTINCT(MONTH_DATE) AS MONTHS, TOTAL_REVENUE AS NEW_REVENUE 
+FROM REVENUE_1) 
+, REVENUE_3 AS (SELECT MONTHS, NEW_REVENUE, LAG(NEW_REVENUE) OVER(ORDER BY MONTHS) AS OLD_REVENUE
+FROM REVENUE_2)
+SELECT MONTHS, NEW_REVENUE, ROUND((NEW_REVENUE-OLD_REVENUE)*100.0/OLD_REVENUE,1)
+FROM REVENUE_3
+
+
+and 1 more question 
