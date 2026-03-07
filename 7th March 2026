@@ -1,0 +1,11 @@
+q1 -> For each department, find employees whose salary is above the department average. Return the department, employee name, their salary, the department average salary (rounded to 2 decimal places), and how much above the average they are. Order by department, then by the difference descending.
+
+sol -> with average as (select department, name, salary, avg(salary) over (partition by department) as avg_salary from employees)
+select department, name, salary, Round(avg_salary,2) as averages, salary-Round(avg_salary,2) as difference from average where salary > averages order by department, difference desc
+
+
+
+q2 -> For each customer, find the longest gap (in days) between consecutive orders. Return the customer ID, the order date that started the gap, the order date that ended the gap, and the number of days in that gap. Order by gap length descending.
+
+
+sol -> with days as ( select customer_id, order_date, lag(order_date) over(partition by customer_id order by order_date) as old_date, order_date - lag(order_date) over(partition by customer_id order by order_date) as difference ) , day as ( select customer_id, order_date, old_date, difference, dense_rank() over (partition by customer_id order by difference desc) as ranks from days where difference is not null ) select customer_id, order_date, old_date, difference from day where ranks = 1 order by difference desc
