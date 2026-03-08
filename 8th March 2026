@@ -1,0 +1,20 @@
+q1 -> Find all users who were active in January 2023 and check whether they were also active in February 2023 (retained) or not (churned). Return the user_id, their January activity date, and a column called status with value Retained or Churned. Order by user_id.
+
+Sol 1 -> 
+SELECT user_id, activity_date,
+CASE 
+WHEN feb_flag = 1 THEN 'Retained'
+ELSE 'Churned'
+END AS status
+FROM (
+    SELECT *,
+           MAX(CASE WHEN MONTH(activity_date)=2 THEN 1 END)
+           OVER(PARTITION BY user_id) AS feb_flag
+    FROM user_activity
+) t
+WHERE MONTH(activity_date)=1
+ORDER BY user_id;
+
+
+
+Plus 2 more questions.
