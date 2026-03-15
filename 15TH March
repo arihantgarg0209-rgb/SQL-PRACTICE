@@ -1,0 +1,8 @@
+q1 -> Find all repeat customers (customers who have placed more than 1 order). Return their customer ID, total number of orders, total amount spent, and average order value rounded to 2 decimal places. Order by total orders descending.
+
+sol 1-> SELECT  CUSTOMER_ID, COUNT(*) AS COUNTS, SUM(AMOUNT) AS TOTAL_AMOUNT, ROUND(AVG(AMOUNT),2) AS AVERAGE FROM ORDERS GROUP BY CUSTOMER_ID HAVING COUNTS>1 ORDER BY COUNTS DESC
+
+
+q2 -> Return each department's total headcount, average salary (rounded to 2 decimal places), and highest salary. Only include departments where the average salary is above £50,000. Order by average salary descending.
+
+sol 2-> SELECT DEPARTMENT, COUNT(NAME), ROUND(AVG(SALARY),2) AS AVERAGE , MAX(SALARY) FROM EMPLOYEES GROUP BY DEPARTMENT HAVING AVERAGE>50000 ORDER BY AVERAGE DESC
